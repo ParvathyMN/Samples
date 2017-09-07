@@ -1,0 +1,58 @@
+﻿@model Testing.Models.Test1
+@{
+    ViewBag.Title = "Main Menu";
+}
+
+<div>
+    <input type="button" id="btnc" value="Create" />
+
+</div>
+
+<div>
+    <input type="button" id="btnd" value="Display" />
+</div>
+
+<div id="result1">
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#btnc').click(function () {
+                $.ajax({
+                    type:"GET",
+                    url: "/Student/Create",
+                    success: function(data)
+                    {
+                        $("#result1").html(data)
+                    },
+                    error: function(data)
+                    {
+                        debugger;
+                    }
+                })
+            });
+
+            $('#btnd').click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Student/Display",
+                    success: function (data) {
+                        $("#result1").html(data)
+                    },
+                    error: function (data) {
+                        debugger;
+                    }
+                })
+            });
+
+
+        });
+
+    </script>
+}
+
+

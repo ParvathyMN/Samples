@@ -1,0 +1,79 @@
+﻿ @model Testing.Models.Test1
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+
+<form id="f1"> 
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Test1</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @*<input type="submit" value="Create" class="btn btn-default" />*@
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<div>
+    @*@Html.ActionLink("Back to List", "Index")*@
+    @*@Html.ActionLink("Display Details","Display")*@
+
+</div>
+
+
+<div>
+    <input type="button" id="btn1" value="save"/>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn1').click(function () {
+                $.ajax({
+                    url: "/Student/Create",
+                    type: "POST",
+                    data: $('#f1').serialize(),
+                    success: function(data)
+                    {
+                        alert('Successfull');
+                    },
+                    error: function(data)
+                    {
+                        debugger;
+                    }
+                })
+            });
+        });
+    
+    </script>
+    
+}
