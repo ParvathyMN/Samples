@@ -60,6 +60,9 @@ namespace Testing.Controllers
             TestDb db = new TestDb();
             List<Test1> li = db.Tests.ToList();  
             return View(li);
+
+
+
         }
 
 
