@@ -20,7 +20,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -29,10 +30,48 @@
             @Html.DisplayFor(modelItem => item.Age)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
 }
 
 </table>
+
+<html>
+<head>
+
+</head>
+<body>
+    <input type="button" id="btn1" value="Search" />
+    <input type="text" id="txt1" />
+    <div id="d1">
+
+    </div>
+</body>
+</html>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $(document).ready(function () {
+        $('#btn1').click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Student/SearchDisplay",
+                data: { name: $('#txt1').val() },
+                success:function(data)
+                {
+                    $('#d1').html(data);
+                }
+            })
+        });
+    });
+    </script>
+}
+
+
+
+
+

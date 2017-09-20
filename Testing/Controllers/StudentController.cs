@@ -12,9 +12,10 @@ namespace Testing.Controllers
     {
         // GET: Student
 
-        //[TestAuthentication]
-        //[TestAutherization("Admin", "Manager")]
-       // [OutputCache(Duration = 10)]
+
+        [TestAutherization("Admin", "Manager")]
+        // [OutputCache(Duration = 10)]
+        [TestAuthentication]
         public ActionResult Index()
         {
             return View();
@@ -26,24 +27,96 @@ namespace Testing.Controllers
             return View();
         }
 
+        //[HttpGet]
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //    // return RedirectToAction("display");
+        //}
         [HttpGet]
-        public ActionResult Create()
+        [ActionName("Create")]
+        public ActionResult getCreate()
         {
             return View();
-            // return RedirectToAction("display");
         }
 
-
         [HttpPost]
-        public ActionResult Create(Test1 std)
+        [ActionName("Create")]
+        public ActionResult postCreate()
         {
             TestDb db = new TestDb();
-            db.Tests.Add(std);
+            Test1 t = new Test1();
+            UpdateModel<Test1>(t);
+           // var ab = form["Id"];
+            db.Tests.Add(t);
+           
             db.SaveChanges();
             return RedirectToAction("Display");
            
          
         }
+
+        [HttpGet]
+        public ActionResult CreateDrop()
+        {
+            var list1 = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text="abc",
+                    Value="abc"
+                },
+
+                new SelectListItem
+                {
+                    Text="def",
+                    Value="def"
+                },
+
+                new SelectListItem
+                {
+                    Text="ghi",
+                    Value="ghi"
+                }
+            };
+            ViewBag.name = list1;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateDrop(Test1 std)
+        {
+            if (ModelState.IsValid)
+            {
+                TestDb db = new TestDb();
+                db.Tests.Add(std);
+                db.SaveChanges();
+                return Json(new { message = "Saved Succesfully" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return View(std);
+            }
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        public ActionResult SearchDisplay(string name)
+        {
+            TestDb db = new TestDb();
+            var stu = (from s in db.Tests where s.Name == name select s).FirstOrDefault();
+            return View(stu);
+        }
+
+
+
+
+
+
+
         public JsonResult IsValidName(string Name)
         {
             TestDb db = new TestDb();
@@ -64,16 +137,25 @@ namespace Testing.Controllers
 
 
         }
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            return View();
+        }
 
-
+        [HttpPost]
         public ActionResult Edit(Test1 std)
         {
             TestDb db = new TestDb();
+           // var id = Convert.ToInt32( form["Id"]);
             var stu = (from s in db.Tests
                       where s.Id==std.Id
                       select s).FirstOrDefault();
-            stu.Name =std.Name;
+            // stu.Id = id;
+            //stu.Age = Convert.ToInt32( form["Age"]);
+            stu.Name = std.Name;
             stu.Age = std.Age;
+           
             db.SaveChanges();
             return View();
         }
